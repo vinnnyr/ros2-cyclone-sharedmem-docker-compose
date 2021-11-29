@@ -1,19 +1,61 @@
 version: "3.2"
 
 services:
+  roudi-router:
+    container_name: roudi-router
+    build:
+      context: .
+      dockerfile: iceoryx.Dockerfile
+    init: true
+    tty: true
+    network_mode: host
+    volumes:
+      - type: bind
+        source: /dev
+        target: /dev
+      - type: bind
+        source: /tmp
+        target: /tmp
   ros2-talker:
     container_name: ros2-talker
     image: ros:galactic
     init: true
     tty: true
+    network_mode: host
     command: >-
       ros2 topic pub /chatter std_msgs/msg/Int32 '{data: 1}'
+    volumes:
+      - type: bind
+        source: ./cyclonedds.xml
+        target: /opt/cyclonedds.xml
+      - type: bind
+        source: /dev
+        target: /dev
+      - type: bind
+        source: /tmp
+        target: /tmp
+    env_file: ros.env
+    depends_on:
+      - roudi-router
   ros2-listener:
     container_name: ros2-listener
     image: ros:galactic
     init: true
     tty: true
+    network_mode: host
     command: >-
       ros2 topic echo /chatter
+    volumes:
+      - type: bind
+        source: ./cyclonedds.xml
+        target: /opt/cyclonedds.xml
+      - type: bind
+        source: /dev
+        target: /dev
+      - type: bind
+        source: /tmp
+        target: /tmp
+    env_file: ros.env
     depends_on:
       - ros2-talker
+      - roudi-router
