@@ -34,7 +34,8 @@ RUN apt-get update && apt-get install -y \
         git \
         wget
 
-RUN git clone https://github.com/eclipse-iceoryx/iceoryx.git
+# the specific hash galactic is compatible with
+RUN git clone https://github.com/eclipse-iceoryx/iceoryx.git && cd iceoryx && git checkout 043ea9073f42
 WORKDIR iceoryx
 RUN ./tools/iceoryx_build_test.sh build-all
 
