@@ -3,15 +3,14 @@
 This is a simple talker/listener demo using shared memoery
 
 ## Usage
-`docker-compose up`
 
-## Notes
-**Note**: unfortunately the iceoryx container is not on dockerhub or any other registry, so right now the docker-compose builds the underlying container as well, which requires internet connection as well as time. 
+Without shared mem:
+`docker-compose -f docker-compose.yaml up`
 
-To rebuild after changing
-`docker-compose up --rebuild`
+With shared mem:
+`docker-compose -f docker-compose.yaml -f roudi.override.docker-compose.yaml up`
 
 Reference
   - https://github.com/ros2/rmw_cyclonedds/blob/master/shared_memory_support.md
-
+  - https://github.com/eclipse-iceoryx/iceoryx/tree/master/iceoryx_examples/icedocker
 

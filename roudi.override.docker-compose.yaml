@@ -1,0 +1,43 @@
+services:
+  roudi-router: 
+    container_name: roudi-router 
+    image: ros:galactic
+    init: true
+    tty: true
+    network_mode: host
+    command: /opt/ros/galactic/bin/iox-roudi
+    volumes:
+      - type: bind
+        source: /dev
+        target: /dev
+      - type: bind
+        source: /tmp
+        target: /tmp
+  ros2-talker:
+    volumes:
+      - type: bind
+        source: ./cyclonedds.xml
+        target: /opt/cyclonedds.xml
+      - type: bind 
+        source: /dev 
+        target: /dev 
+      - type: bind 
+        source: /tmp 
+        target: /tmp 
+    depends_on: 
+      - roudi-router
+    env_file: ros.env
+  ros2-talker:
+    volumes:
+      - type: bind
+        source: ./cyclonedds.xml
+        target: /opt/cyclonedds.xml
+      - type: bind 
+        source: /dev 
+        target: /dev 
+      - type: bind 
+        source: /tmp 
+        target: /tmp 
+    depends_on: 
+      - roudi-router
+    env_file: ros.env

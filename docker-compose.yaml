@@ -1,20 +1,6 @@
 version: "3.2"
 
 services:
-  roudi-router:
-    container_name: roudi-router
-    image: ros:galactic
-    init: true
-    tty: true
-    network_mode: host
-    command: /opt/ros/galactic/bin/iox-roudi
-    volumes:
-      - type: bind
-        source: /dev
-        target: /dev
-      - type: bind
-        source: /tmp
-        target: /tmp
   ros2-talker:
     container_name: ros2-talker
     image: ros:galactic
@@ -22,20 +8,7 @@ services:
     tty: true
     network_mode: host
     command: >-
-      ros2 topic pub /chatter std_msgs/msg/Int32 '{data: 1}'
-    volumes:
-      - type: bind
-        source: ./cyclonedds.xml
-        target: /opt/cyclonedds.xml
-      - type: bind
-        source: /dev
-        target: /dev
-      - type: bind
-        source: /tmp
-        target: /tmp
-    env_file: ros.env
-    depends_on:
-      - roudi-router
+      ros2 topic pub /chatter std_msgs/msg/Int32 '{data: 1}' -r 100
   ros2-listener:
     container_name: ros2-listener
     image: ros:galactic
@@ -44,17 +17,5 @@ services:
     network_mode: host
     command: >-
       ros2 topic echo /chatter
-    volumes:
-      - type: bind
-        source: ./cyclonedds.xml
-        target: /opt/cyclonedds.xml
-      - type: bind
-        source: /dev
-        target: /dev
-      - type: bind
-        source: /tmp
-        target: /tmp
-    env_file: ros.env
     depends_on:
       - ros2-talker
-      - roudi-router
