@@ -3,12 +3,11 @@ version: "3.2"
 services:
   roudi-router:
     container_name: roudi-router
-    build:
-      context: .
-      dockerfile: iceoryx.Dockerfile
+    image: ros:galactic
     init: true
     tty: true
     network_mode: host
+    command: /opt/ros/galactic/bin/iox-roudi
     volumes:
       - type: bind
         source: /dev
