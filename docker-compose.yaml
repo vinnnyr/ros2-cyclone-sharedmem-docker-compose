@@ -2,7 +2,6 @@ version: "3.2"
 
 services:
   ros2-talker:
-    container_name: ros2-talker
     image: ros:galactic
     init: true
     tty: true
@@ -10,7 +9,6 @@ services:
     command: >-
       ros2 topic pub /chatter std_msgs/msg/Int32 '{data: 1}' -r 100
   ros2-listener:
-    container_name: ros2-listener
     image: ros:galactic
     init: true
     tty: true
